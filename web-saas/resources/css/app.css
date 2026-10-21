@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views/**/*.blade.php';
+@source '../js/**/*.js';
+@source '../js/**/*.vue';
+
+@theme {
+    --font-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    --pd-bg: #F8FAFC;
+    --pd-sidebar: #FFFFFF;
+    --pd-surface: #FFFFFF;
+    --pd-surface-alt: #F1F5F9;
+    --pd-border: #E2E8F0;
+    --pd-text: #0F172A;
+    --pd-muted: #64748B;
+}
+
+html.dark {
+    --pd-bg: #070B14;
+    --pd-sidebar: #0B1120;
+    --pd-surface: #0F172A;
+    --pd-surface-alt: #090D16;
+    --pd-border: #1E293B;
+    --pd-text: #F8FAFC;
+    --pd-muted: #94A3B8;
+}
+
+body {
+    font-family: var(--font-sans);
+    background-color: var(--pd-bg);
+    color: var(--pd-text);
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.pd-bg { background-color: var(--pd-bg); }
+.pd-sidebar { background-color: var(--pd-sidebar); }
+.pd-card { background-color: var(--pd-surface); border-color: var(--pd-border); }
+.pd-input { background-color: var(--pd-surface-alt); border-color: var(--pd-border); color: var(--pd-text); }
+.pd-border { border-color: var(--pd-border); }
+.pd-text { color: var(--pd-text); }
+.pd-muted { color: var(--pd-muted); }
+
+.pd-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.pd-scroll::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 9999px;
+}
+
+.pd-glow {
+    box-shadow: 0 0 0 1px rgba(99, 102, 241, 0.4), 0 10px 35px -10px rgba(99, 102, 241, 0.35);
+}
+
+@keyframes pd-pulse-dot {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.35; }
+}
+
+.pd-live {
+    animation: pd-pulse-dot 1.6s ease-in-out infinite;
+}

@@ -1,0 +1,103 @@
+name: PulseDesk AI — Full-Stack CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  rag-api-tests:
+    name: FastAPI RAG Engine (Python 3.12 + Pytest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./rag-api
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: ./rag-api/requirements.txt
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run FastAPI RAG Pytest Suite
+        env:
+          DATABASE_URL: sqlite:///./test_ci.db
+          USE_PGVECTOR: "false"
+          DEFAULT_LLM_PROVIDER: openrouter
+        run: pytest -v
+
+  tg-bot-tests:
+    name: Telegram RAG Bot (Node.js 22 + TypeScript + Vitest)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./tg-bot
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: ./tg-bot/package.json
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: TypeScript Typecheck
+        run: npm run typecheck
+
+      - name: Run Vitest Suite
+        run: npm test
+
+  web-saas-tests:
+    name: Laravel 11 + Vue 3 SaaS & Stripe Billing (PHP 8.3 + PHPUnit)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web-saas
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, xml, ctype, json, pdo, pdo_sqlite, sqlite3, bcmath
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Setup Node.js & Build Vue 3 / Inertia Assets
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+          cache-dependency-path: ./web-saas/package.json
+
+      - name: Build Frontend Assets
+        run: |
+          npm install
+          npm run build
+
+      - name: Prepare Laravel Environment & SQLite Test DB
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+          touch database/database.sqlite
+
+      - name: Run Laravel Feature & Unit Tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+          INTERNAL_WEBHOOK_SECRET: pulsedesk_internal_secret_key
+        run: php artisan test

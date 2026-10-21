@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="pd_bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#7C3AED" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <linearGradient id="pd_pulse" x1="12" y1="32" x2="52" y2="32" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#A5F3FC" />
+    </linearGradient>
+  </defs>
+  <!-- Squircle Chat Shield -->
+  <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#pd_bg)" />
+  <path d="M18 46L14 54L25 49" fill="url(#pd_bg)" />
+  <!-- Inner Glass Frame -->
+  <rect x="8" y="8" width="48" height="48" rx="12" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="1.5" />
+  <!-- Recognizable AI Pulse Waveform -->
+  <path d="M13 33H21L26 20L33 44L39 26L43 33H51" stroke="url(#pd_pulse)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="51" cy="33" r="3" fill="#22D3EE" />
+</svg>
